@@ -1,0 +1,15 @@
+{
+  "name": "Bipki",
+  "short_name": "Bipki",
+  "start_url": "https://bipki.ddns.net",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Bipki app",
+  "icons": [
+    {
+      "src": "site-icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }
+  ]
+}
