@@ -5,10 +5,12 @@ import NotFoundPage from "./pages/NotFoundPage.tsx";
 import {useState} from "react";
 import type {UserData} from "./types/user.ts";
 import {getDefaultUserData, UserDataContext} from "./context/UserDataContext.tsx";
+import Register from "./pages/Register.tsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route element={<RootLayout/>}>
     <Route index element={<HomePage/>}/>
+    <Route path="/register" element={<Register/>}/>
     <Route path="*" element={<NotFoundPage/>}/>
   </Route>
 ))

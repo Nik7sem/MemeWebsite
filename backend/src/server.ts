@@ -1,18 +1,19 @@
-const PORT = parseInt(process.env.PORT || "8001", 10)
-const HOSTNAME = process.env.HOSTNAME || "127.0.0.1"
-const NODE_ENV = process.env.NODE_ENV || "development"
+import {Elysia} from 'elysia'
+import {authRouter} from "./routers/authRouter.ts";
+import {HOSTNAME, NODE_ENV, PORT} from "./init.ts";
+import {migrateDB} from "./db/db.ts";
 
-const server = Bun.serve({
-  port: PORT,
-  hostname: HOSTNAME,
-  development: NODE_ENV === "development",
-  // tls: NODE_ENV === "development" ? {
-  //   cert: Bun.file('./certs/fullchain.pem'),
-  //   key: Bun.file('./certs/server-key.pem'),
-  // } : undefined,
-  fetch(req, server) {
-    return new Response("Not implemented", {status: 500});
-  }
-})
+const app = new Elysia({prefix: '/api'})
+  .onRequest(({request}) => {
+    console.log(`${request.method} ${request.url}`);
+  })
+  .use(authRouter)
+  .listen({
+    port: PORT,
+    hostname: HOSTNAME,
+  })
 
-console.log(`Server listening on "${server.url}" in "${NODE_ENV}" mode`);
+console.log(
+  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port} in ${NODE_ENV} mode.`
+)
+migrateDB()

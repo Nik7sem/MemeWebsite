@@ -7,6 +7,9 @@ export default defineConfig({
   server: {
     port: 8000,
     host: '0.0.0.0',
+    proxy: {
+      '/api': 'http://localhost:8001'
+    }
     // https: {
     //   cert: await Bun.file('./certs/fullchain.pem').text(),
     //   key: await Bun.file('./certs/server-key.pem').text()
