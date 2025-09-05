@@ -3,24 +3,45 @@ import RootLayout from "./layouts/RootLayout.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import {useState} from "react";
-import type {UserData} from "./types/user.ts";
+import type {User, UserData} from "./types/user.ts";
 import {getDefaultUserData, UserDataContext} from "./context/UserDataContext.tsx";
 import Register from "./pages/Register.tsx";
+import {getDefaultUser, UserContext} from "./context/UserContext.tsx";
+import AnonymousOnly from "./layouts/AnonymousOnly.tsx";
+import RequireUser from "./layouts/RequireAuth.tsx";
+import Profile from "./pages/Profile.tsx";
+import RequireAdmin from "./layouts/RequireAdmin.tsx";
+import AdminPage from "./pages/AdminPage.tsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route element={<RootLayout/>}>
     <Route index element={<HomePage/>}/>
-    <Route path="/register" element={<Register/>}/>
+    <Route element={<AnonymousOnly/>}>
+      <Route path="register" element={<Register/>}/>
+      <Route path="login" element={<Register/>}/>
+    </Route>
+
+    <Route element={<RequireUser/>}>
+      <Route path="profile" element={<Profile/>}/>
+    </Route>
+
+    <Route element={<RequireAdmin/>}>
+      <Route path="admin" element={<AdminPage/>}/>
+    </Route>
+
     <Route path="*" element={<NotFoundPage/>}/>
   </Route>
 ))
 
 function App() {
   const [userData, setUserData] = useState<UserData>(getDefaultUserData)
+  const [user, setUser] = useState<User | null>(getDefaultUser);
 
   return (
     <UserDataContext.Provider value={{userData, setUserData}}>
-      <RouterProvider router={router}/>
+      <UserContext value={{user, setUser}}>
+        <RouterProvider router={router}/>
+      </UserContext>
     </UserDataContext.Provider>
   )
 }

@@ -10,7 +10,11 @@ const useUserData = () => {
     localStorage.setItem('userdata', JSON.stringify(newUserData))
   }
 
-  return {userData, setUserData: setData}
+  function removeData() {
+    localStorage.removeItem('userdata')
+  }
+
+  return {userData, setUserData: setData, removeUserData: removeData}
 }
 
 export default useUserData

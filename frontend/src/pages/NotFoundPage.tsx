@@ -1,10 +1,11 @@
 import React from 'react';
+import {Container, Text} from "@chakra-ui/react";
 
 const NotFoundPage = () => {
   return (
-    <div>
-
-    </div>
+    <Container>
+      <Text fontSize='8xl'>NOT FOUND</Text>
+    </Container>
   );
 };
 

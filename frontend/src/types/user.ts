@@ -1,3 +1,8 @@
 export type UserData = {
-  token: string
+  bruh: string
+}
+
+export type User = {
+  username: string
+  role: "user" | "admin"
 }

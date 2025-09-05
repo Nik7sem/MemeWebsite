@@ -31,13 +31,13 @@ export const authRouter = new Elysia({
   )
   .post('/register/', async ({jwt, status, body: {username, password}, cookie: {auth}}) => {
     const passwordHash = await passwordBun.hash(password)
+    const user: typeof usersTable.$inferInsert = {
+      username: username,
+      password: passwordHash,
+      role: 'user'
+    }
     try {
-      const user: typeof usersTable.$inferInsert = {
-        username: username,
-        password: passwordHash,
-        role: 'user'
-      }
-      await db.insert(usersTable).values(user);
+      await db.insert(usersTable).values(user)
     } catch (err) {
       return status('Unauthorized', {error: "User already exists"})
     }
@@ -46,7 +46,7 @@ export const authRouter = new Elysia({
 
     const value = await jwt.sign({username})
     setAuthCookie(value, auth)
-    return status('OK')
+    return {message: {role: user.role}}
   }, {
     body: t.Object({
       username: t.String(),
@@ -67,7 +67,7 @@ export const authRouter = new Elysia({
 
     const value = await jwt.sign({username})
     setAuthCookie(value, auth)
-    return status('OK')
+    return {message: {role: user.role}}
   }, {
     query: t.Object({
       username: t.String(),
