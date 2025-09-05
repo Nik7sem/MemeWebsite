@@ -4,6 +4,7 @@ import {db} from "../db/db.ts";
 import {usersTable} from "../db/schema.ts";
 import {password as passwordBun} from "bun";
 import {COOKIE_AUTH_SECRET, JWT_SECRET} from "../init.ts";
+import {and, eq} from "drizzle-orm";
 
 function setAuthCookie(value: string, auth: Cookie<string | undefined> | undefined) {
   auth?.set({
@@ -28,39 +29,54 @@ export const authRouter = new Elysia({
       secret: JWT_SECRET
     })
   )
-  .post('/register/', async ({jwt, body: {username, password}, cookie: {auth}}) => {
+  .post('/register/', async ({jwt, status, body: {username, password}, cookie: {auth}}) => {
     const passwordHash = await passwordBun.hash(password)
-    console.log(`Register ${username}, ${passwordHash}.`);
-    const value = await jwt.sign({username})
     try {
-      console.log(await db.select().from(usersTable))
+      const user: typeof usersTable.$inferInsert = {
+        username: username,
+        password: passwordHash,
+        role: 'user'
+      }
+      await db.insert(usersTable).values(user);
     } catch (err) {
-      console.log(err)
+      return status('Unauthorized', {error: "User already exists"})
     }
 
+    console.log(`Register ${username}.`);
+
+    const value = await jwt.sign({username})
     setAuthCookie(value, auth)
-    return `Register as ${value}`
+    return status('OK')
   }, {
     body: t.Object({
       username: t.String(),
       password: t.String(),
     })
   })
-  .get('/login/', async ({jwt, query: {username, password}, cookie: {auth}}) => {
-    const passwordHash = await passwordBun.hash(password)
-    console.log(`Login ${username}, ${passwordHash}.`);
+  .get('/login/', async ({jwt, status, query: {username, password}, cookie: {auth}}) => {
+    const user = db.select().from(usersTable).where(
+      eq(usersTable.username, username),
+    ).get()
+
+    if (!user) return status('Unauthorized', {error: "User not found"});
+
+    const valid = await passwordBun.verify(password, user.password);
+    if (!valid) return status('Unauthorized', {error: "Invalid password"});
+
+    console.log(`Login ${username}.`);
+
     const value = await jwt.sign({username})
     setAuthCookie(value, auth)
-    return `Login as ${value}`
+    return status('OK')
   }, {
     query: t.Object({
       username: t.String(),
       password: t.String(),
     })
   })
-  .get('/logout/', async ({cookie: {auth}}) => {
+  .get('/logout/', async ({status, cookie: {auth}}) => {
     auth.remove()
-    return `Logout`
+    return status('OK')
   }, {
     cookie: t.Cookie({
       auth: t.String()
@@ -69,10 +85,17 @@ export const authRouter = new Elysia({
   .get('/profile/', async ({jwt, status, cookie: {auth}}) => {
     const profile = await jwt.verify(auth.value)
 
-    if (!profile)
-      return status(401, 'Unauthorized')
+    if (!profile || typeof profile.username !== 'string') {
+      return status("Unauthorized")
+    }
 
-    return `Hello ${profile.username}!`
+    const user = db.select().from(usersTable).where(
+      eq(usersTable.username, profile.username),
+    ).get()
+
+    if (!user) return status('Unauthorized', {error: "User not found"});
+
+    return {message: {role: user.role}}
   }, {
     cookie: t.Cookie({
       auth: t.String()

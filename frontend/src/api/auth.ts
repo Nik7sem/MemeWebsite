@@ -1,21 +1,17 @@
-import axios from "axios";
+import {api, request} from "./general.ts";
 
-export async function register() {
-  const data = await axios.post(`/api/auth/register/`, {username: 'siegfried', password: '1111'})
-  return data
+export async function register(username: string, password: string) {
+  return request(() => api.post(`/auth/register/`, {username: 'siegfried', password: '1111'}))
 }
 
-export async function login() {
-  const data = await axios.get(`/api/auth/login/`, {params: {username: 'siegfried', password: '1111'}})
-  return data
+export async function login(username: string, password: string) {
+  return request(() => api.get(`/auth/login/`, {params: {username: 'siegfried', password: '1111'}}))
 }
 
 export async function logout() {
-  const data = await axios.get(`/api/auth/logout/`)
-  return data
+  return request(() => api.get(`/auth/logout/`))
 }
 
 export async function profile() {
-  const data = await axios.get(`/api/auth/profile/`)
-  return data
+  return request(() => api.get(`/auth/profile/`))
 }
