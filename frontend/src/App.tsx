@@ -12,13 +12,14 @@ import RequireUser from "./layouts/RequireAuth.tsx";
 import Profile from "./pages/Profile.tsx";
 import RequireAdmin from "./layouts/RequireAdmin.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
+import Login from "./pages/Login.tsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route element={<RootLayout/>}>
     <Route index element={<HomePage/>}/>
     <Route element={<AnonymousOnly/>}>
       <Route path="register" element={<Register/>}/>
-      <Route path="login" element={<Register/>}/>
+      <Route path="login" element={<Login/>}/>
     </Route>
 
     <Route element={<RequireUser/>}>

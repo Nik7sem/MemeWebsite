@@ -12,7 +12,7 @@ export function getDefaultUser(): User | null {
 
 interface UserSetter {
   user: User | null
-  setUser: (user: User) => void;
+  setUser: (user: User | null) => void;
 }
 
 export const UserContext = createContext<UserSetter>({

@@ -11,6 +11,7 @@ const useUser = () => {
   }
 
   function remove() {
+    setUser(null)
     localStorage.removeItem('user')
   }
 
