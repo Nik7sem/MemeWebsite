@@ -1,9 +1,10 @@
 import React from 'react';
-import {Avatar, Flex, Heading, HoverCard, Portal, Stack, Text} from "@chakra-ui/react";
+import {Flex, Heading, HoverCard, Portal, Stack, Text} from "@chakra-ui/react";
 import {Toaster} from "./ui/toaster.tsx";
 import {ColorModeButton} from "./ui/color-mode.tsx";
 import {Link} from "react-router";
 import useUser from "../hooks/useUser.tsx";
+import StyledAvatar from "./StyledAvatar.tsx";
 
 const Header = () => {
   const {user} = useUser();
@@ -15,13 +16,17 @@ const Header = () => {
         <Heading size="3xl">Bipki</Heading>
       </Link>
 
+      {
+        user?.role === 'admin' ?
+          <Link to='/admin'>
+            <Heading size="3xl">Admin</Heading>
+          </Link> : <></>
+      }
+
       <HoverCard.Root size="sm" disabled={!user}>
         <HoverCard.Trigger asChild>
           <Link to='/profile'>
-            <Avatar.Root bg={user && user.role === 'admin' ? "red.500" : "blue.500"}>
-              <Avatar.Fallback name={user ? user.username : ''}/>
-              {/*<Avatar.Image src="https://bit.ly/sage-adebayo"/>*/}
-            </Avatar.Root>
+            <StyledAvatar user={user}/>
           </Link>
         </HoverCard.Trigger>
         {
@@ -31,9 +36,7 @@ const Header = () => {
                 <HoverCard.Content>
                   <HoverCard.Arrow/>
                   <Stack gap="4" direction="row">
-                    <Avatar.Root>
-                      <Avatar.Fallback name={user.username}/>
-                    </Avatar.Root>
+                    <StyledAvatar user={user}/>
                     <Stack gap="1">
                       <Text textStyle="sm" fontWeight="semibold">
                         {user.username}

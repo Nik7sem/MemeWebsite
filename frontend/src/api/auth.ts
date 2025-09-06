@@ -2,7 +2,7 @@ import {api, request} from "./general.ts";
 import {z} from "zod";
 
 const authScheme = z.object({
-  role: z.literal(["user", "admin"]),
+  role: z.string(),
   username: z.string()
 })
 

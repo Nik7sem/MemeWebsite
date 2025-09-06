@@ -4,5 +4,5 @@ export type UserData = {
 
 export type User = {
   username: string
-  role: "user" | "admin"
+  role: string
 }

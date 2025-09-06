@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, type KeyboardEvent} from 'react';
 import {Button, Field, Fieldset, Flex, Input, Span, Stack} from "@chakra-ui/react";
 import {Link} from "react-router";
 import {login} from "../api/auth.ts";
@@ -19,6 +19,13 @@ const Login = () => {
       return true
     }
     return false
+  }
+
+  function keyDownHandler(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      onClick().then()
+    }
   }
 
   async function onClick() {
@@ -50,7 +57,8 @@ const Login = () => {
 
           <Field.Root>
             <Field.Label>Password</Field.Label>
-            <Input name="password" type="password" onChange={(e) => setPassword(e.target.value)}/>
+            <Input name="password" type="password" onChange={(e) => setPassword(e.target.value)}
+                   onKeyDown={keyDownHandler}/>
           </Field.Root>
         </Fieldset.Content>
 

@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Avatar,
   Box,
   Button,
   Center,
@@ -12,6 +11,7 @@ import {logout} from "../api/auth";
 import useUser from "../hooks/useUser";
 import {useNavigate} from "react-router-dom";
 import {useColorModeValue} from "../components/ui/color-mode.tsx";
+import StyledAvatar from "../components/StyledAvatar.tsx";
 
 const Profile = () => {
   const {removeUser, user} = useUser();
@@ -34,13 +34,7 @@ const Profile = () => {
         p={8}
         textAlign="center"
       >
-        <Avatar.Root
-          size="2xl"
-          mb={4}
-          bg={user && user.role === 'admin' ? "red.500" : "blue.500"}
-        >
-          <Avatar.Fallback name={user ? user.username : ''}/>
-        </Avatar.Root>
+        <StyledAvatar user={user} mb={4} size="2xl"/>
 
         <Heading fontSize="2xl" fontWeight="bold">
           {user?.username || "Anonymous"}
