@@ -4,7 +4,7 @@ import {JWT_SECRET} from "../init.ts";
 import UserService from "../services/userService.ts";
 
 export const usersRouter = new Elysia({
-  prefix: '/users',
+  prefix: '/api/users',
 })
   .guard({
     cookie: t.Cookie({

@@ -15,7 +15,7 @@ function setAuthCookie(value: string, auth: Cookie<string | undefined> | undefin
 }
 
 export const authRouter = new Elysia({
-  prefix: '/auth',
+  prefix: '/api/auth',
   // cookie: {
   //   secrets: COOKIE_AUTH_SECRET,
   //   sign: ["auth"],

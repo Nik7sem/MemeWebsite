@@ -6,17 +6,17 @@ import {resolve} from "path";
 export default defineConfig({
   server: {
     port: 8000,
-    host: '0.0.0.0',
+    host: 'localhost',
     proxy: {
-      '/api': 'http://localhost:8001'
-    }
+      '/api': 'http://localhost:8001',
+    },
     // https: {
     //   cert: await Bun.file('./certs/fullchain.pem').text(),
     //   key: await Bun.file('./certs/server-key.pem').text()
     // },
     // hmr: {
-    //   host: '0.0.0.0',
-    //   protocol: "wss"
+    //   host: 'localhost',
+    //   protocol: "ws",
     // }
   },
   // esbuild: {
