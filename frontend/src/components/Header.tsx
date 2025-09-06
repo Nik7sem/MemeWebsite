@@ -18,13 +18,8 @@ const Header = () => {
       <HoverCard.Root size="sm" disabled={!user}>
         <HoverCard.Trigger asChild>
           <Link to='/profile'>
-            <Avatar.Root>
-              {
-                user ?
-                  <Avatar.Fallback name={user.username}/>
-                  :
-                  <Avatar.Fallback/>
-              }
+            <Avatar.Root bg={user && user.role === 'admin' ? "red.500" : "blue.500"}>
+              <Avatar.Fallback name={user ? user.username : ''}/>
               {/*<Avatar.Image src="https://bit.ly/sage-adebayo"/>*/}
             </Avatar.Root>
           </Link>

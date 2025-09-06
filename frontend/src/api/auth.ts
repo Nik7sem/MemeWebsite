@@ -2,7 +2,8 @@ import {api, request} from "./general.ts";
 import {z} from "zod";
 
 const authScheme = z.object({
-  role: z.literal(["user", "admin"])
+  role: z.literal(["user", "admin"]),
+  username: z.string()
 })
 
 export async function register(username: string, password: string) {

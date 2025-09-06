@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button, Field, Fieldset, Flex, Input, Span, Stack} from "@chakra-ui/react";
 import useUser from "../hooks/useUser.tsx";
-import {login, register} from "../api/auth.ts";
+import {register} from "../api/auth.ts";
 import {Link} from "react-router";
 
 const Register = () => {

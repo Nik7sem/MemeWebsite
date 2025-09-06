@@ -46,7 +46,7 @@ export const authRouter = new Elysia({
 
     const value = await jwt.sign({username})
     setAuthCookie(value, auth)
-    return {message: {role: user.role}}
+    return {message: {username, role: user.role}}
   }, {
     body: t.Object({
       username: t.String(),
@@ -67,7 +67,7 @@ export const authRouter = new Elysia({
 
     const value = await jwt.sign({username})
     setAuthCookie(value, auth)
-    return {message: {role: user.role}}
+    return {message: {username, role: user.role}}
   }, {
     query: t.Object({
       username: t.String(),
@@ -95,7 +95,7 @@ export const authRouter = new Elysia({
 
     if (!user) return status('Unauthorized', {error: "User not found"});
 
-    return {message: {role: user.role}}
+    return {message: {username: profile.username, role: user.role}}
   }, {
     cookie: t.Cookie({
       auth: t.String()

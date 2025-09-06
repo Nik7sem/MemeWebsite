@@ -6,7 +6,7 @@ import {useState} from "react";
 import type {User, UserData} from "./types/user.ts";
 import {getDefaultUserData, UserDataContext} from "./context/UserDataContext.tsx";
 import Register from "./pages/Register.tsx";
-import {getDefaultUser, UserContext} from "./context/UserContext.tsx";
+import {UserContext} from "./context/UserContext.tsx";
 import AnonymousOnly from "./layouts/AnonymousOnly.tsx";
 import RequireUser from "./layouts/RequireAuth.tsx";
 import Profile from "./pages/Profile.tsx";
@@ -36,7 +36,7 @@ const router = createBrowserRouter(createRoutesFromElements(
 
 function App() {
   const [userData, setUserData] = useState<UserData>(getDefaultUserData)
-  const [user, setUser] = useState<User | null>(getDefaultUser);
+  const [user, setUser] = useState<User | null>(null);
 
   return (
     <UserDataContext.Provider value={{userData, setUserData}}>

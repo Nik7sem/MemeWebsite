@@ -7,12 +7,10 @@ const useUser = () => {
 
   function set(newUser: User) {
     setUser(newUser)
-    localStorage.setItem('user', JSON.stringify(newUser))
   }
 
   function remove() {
     setUser(null)
-    localStorage.removeItem('user')
   }
 
   return {user, setUser: set, removeUser: remove}
