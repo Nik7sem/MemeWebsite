@@ -1,5 +1,20 @@
 import {Elysia, t} from "elysia";
 import {authMiddleware} from "../middlewares/authMiddleware.ts";
+import {canvasService} from "../init.ts";
+
+// Define the variants
+const DrawMessage = t.Object({
+  type: t.Literal('draw'),
+  data: t.Array(
+    t.Object({
+      row: t.Number(),
+      col: t.Number(),
+      color: t.String()
+    })
+  )
+})
+
+const CanvasMessage = t.Union([DrawMessage])
 
 export const wsRouter = new Elysia({
   websocket: {
@@ -14,18 +29,13 @@ export const wsRouter = new Elysia({
     return {user}
   })
   .ws('/ws', {
-    body: t.Object({
-      data: t.Array(t.Object({
-        row: t.Number(),
-        col: t.Number(),
-        color: t.String()
-      }))
-    }),
+    body: CanvasMessage,
     cookie: t.Cookie({
       auth: t.String()
     }),
     async open(ws) {
       console.log('open', ws.id, ws.data.user.username)
+      ws.send({type: 'canvas', data: {size: canvasService.getArraySize(), array: canvasService.array}})
       ws.subscribe('draw')
     },
     async close(ws) {
@@ -34,6 +44,7 @@ export const wsRouter = new Elysia({
     async message(ws, message) {
       if (ws.data.user.role !== 'admin') return
       console.log('draw', message.data.length, ws.data.user.username)
-      ws.publish('draw', message)
+      canvasService.draw(message.data)
+      ws.publish('draw', {type: 'draw', data: message.data})
     },
   })
