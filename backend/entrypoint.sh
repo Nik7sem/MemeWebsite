@@ -1,1 +1,0 @@
-bunx drizzle-kit generate
