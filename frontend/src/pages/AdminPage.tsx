@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Menu, Portal, Table, Text, VStack} from "@chakra-ui/react";
+import {Button, Field, HStack, Menu, NumberInput, Portal, Separator, Table, Text, VStack} from "@chakra-ui/react";
 import {deleteUser, getUsers, updateUser} from "../api/users.ts";
 import {LuChevronRight} from "react-icons/lu";
 import StyledAvatar from "../components/StyledAvatar.tsx";
 import useToast from "../hooks/useToast.tsx";
+import {clearCanvas, setCanvasSize} from "../api/canvas.ts";
 
 const AdminPage = () => {
   const [users, setUsers] = useState<{ id: number, username: string, role: string }[]>([]);
+  const [size, setSize] = useState<{ rows: number, cols: number }>({rows: 100, cols: 100});
   const {errorToast} = useToast();
 
   useEffect(() => {
@@ -103,6 +105,30 @@ const AdminPage = () => {
           ))}
         </Table.Body>
       </Table.Root>
+      <Separator size='lg'/>
+      <Text fontSize='3xl' mt='10px'>Canvas</Text>
+      <Button onClick={() => clearCanvas()}>Clear canvas</Button>
+      <HStack>
+        <Field.Root>
+          <Field.Label>Rows</Field.Label>
+          <NumberInput.Root value={size.rows.toString()}
+                            onValueChange={(e) => setSize({...size, rows: parseInt(e.value)})} width="200px">
+            <NumberInput.Control/>
+            <NumberInput.Input/>
+          </NumberInput.Root>
+          <Field.ErrorText>The entry is invalid</Field.ErrorText>
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>Cols</Field.Label>
+          <NumberInput.Root value={size.cols.toString()}
+                            onValueChange={(e) => setSize({...size, cols: parseInt(e.value)})} width="200px">
+            <NumberInput.Control/>
+            <NumberInput.Input/>
+          </NumberInput.Root>
+          <Field.ErrorText>The entry is invalid</Field.ErrorText>
+        </Field.Root>
+      </HStack>
+      <Button onClick={() => setCanvasSize(size)}>Set size</Button>
     </VStack>
   );
 };

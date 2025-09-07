@@ -24,6 +24,16 @@ export class CanvasService {
     })
   }
 
+  public clear() {
+    this.createArray()
+  }
+
+  public setSize(rows: number, cols: number) {
+    this.gridRows = rows;
+    this.gridCols = cols;
+    this.createArray()
+  }
+
   get array() {
     return this._array;
   }

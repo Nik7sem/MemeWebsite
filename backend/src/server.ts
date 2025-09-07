@@ -5,6 +5,7 @@ import {migrateDB} from "./db/db.ts";
 import UserService from "./services/userService.ts";
 import {usersRouter} from "./routers/usersRouter.ts";
 import {wsRouter} from "./routers/wsRouter.ts";
+import {canvasRouter} from "./routers/canvasRouter.ts";
 
 const app = new Elysia()
   .onTransform(function log({body, params, query, path, request: {method}}) {
@@ -16,6 +17,7 @@ const app = new Elysia()
   })
   .use(authRouter)
   .use(usersRouter)
+  .use(canvasRouter)
   .use(wsRouter)
   .listen({
     port: PORT,
