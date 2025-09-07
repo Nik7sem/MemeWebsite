@@ -1,8 +1,9 @@
 import axios from "axios";
 import {type ZodType} from "zod";
+import type {RequireOnlyOne} from "../types/generic.ts";
 
 export const api = axios.create({baseURL: '/api'})
-export type ApiResponse<T> = { data?: T; error?: string };
+export type ApiResponse<T> = RequireOnlyOne<{ data: T; error: string }>;
 
 // Generic request
 export async function request<T>(

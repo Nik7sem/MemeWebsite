@@ -2,7 +2,6 @@ import {Cookie, Elysia, t} from "elysia";
 import {jwt} from '@elysiajs/jwt'
 import {JWT_SECRET} from "../init.ts";
 import UserService from "../services/userService.ts";
-import {password as passwordBun} from "bun";
 
 function setAuthCookie(value: string, auth: Cookie<string | undefined> | undefined) {
   auth?.set({
@@ -27,6 +26,17 @@ export const authRouter = new Elysia({
       secret: JWT_SECRET
     })
   )
+  .model(
+    {
+      credentials: t.Object({
+        username: t.String(),
+        password: t.String()
+      }),
+      authCookie: t.Cookie({
+        auth: t.String()
+      })
+    }
+  )
   .post('/register/', async ({jwt, status, body: {username, password}, cookie: {auth}}) => {
     const user = await UserService.addUser({
       username, password, role: 'user'
@@ -40,17 +50,14 @@ export const authRouter = new Elysia({
     setAuthCookie(value, auth)
     return {message: {username: user.username, role: user.role}}
   }, {
-    body: t.Object({
-      username: t.String(),
-      password: t.String(),
-    })
+    body: 'credentials'
   })
   .get('/login/', async ({jwt, status, query: {username, password}, cookie: {auth}}) => {
     const user = UserService.getUser(username)
     if (!user) return status('Unauthorized', {error: "User not found"});
 
     try {
-      const valid = await passwordBun.verify(password, user.password);
+      const valid = await Bun.password.verify(password, user.password);
       if (!valid) return status('Unauthorized', {error: "Invalid password"});
     } catch (err) {
       return status('Unauthorized', {error: "Something wrong with credentials"});
@@ -62,18 +69,13 @@ export const authRouter = new Elysia({
     setAuthCookie(value, auth)
     return {message: {username: user.username, role: user.role}}
   }, {
-    query: t.Object({
-      username: t.String(),
-      password: t.String(),
-    })
+    query: 'credentials'
   })
   .get('/logout/', async ({status, cookie: {auth}}) => {
     auth.remove()
     return status('OK')
   }, {
-    cookie: t.Cookie({
-      auth: t.String()
-    })
+    cookie: 'authCookie'
   })
   .get('/profile/', async ({jwt, status, cookie: {auth}}) => {
     const profile = await jwt.verify(auth.value)
@@ -87,7 +89,5 @@ export const authRouter = new Elysia({
 
     return {message: {username: user.username, role: user.role}}
   }, {
-    cookie: t.Cookie({
-      auth: t.String()
-    })
+    cookie: 'authCookie'
   })

@@ -33,7 +33,7 @@ const Login = () => {
 
     const rs = await login(username, password);
     if (rs.data) {
-      setUser({...rs.data, username});
+      setUser({...rs.data});
     } else if (rs.error) {
       setError(rs.error)
     }

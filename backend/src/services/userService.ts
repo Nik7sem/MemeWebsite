@@ -1,14 +1,13 @@
 import {usersTable} from "../db/schema.ts";
 import {db} from "../db/db.ts";
 import {eq} from "drizzle-orm";
-import {password as passwordBun} from "bun";
 
 export default class UserService {
   static async addUser(user: typeof usersTable.$inferInsert) {
     try {
       await db.insert(usersTable).values({
         ...user,
-        password: await passwordBun.hash(user.password)
+        password: await Bun.password.hash(user.password)
       })
     } catch (error) {
       return

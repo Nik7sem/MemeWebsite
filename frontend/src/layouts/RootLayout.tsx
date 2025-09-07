@@ -15,7 +15,7 @@ const RootLayout = () => {
       profile().then((rs) => {
         setTimeout(() => {
           if (rs.data) {
-            setUser({username: rs.data.username, role: rs.data.role})
+            setUser({...rs.data})
           }
           setLoading(false)
         }, 500)

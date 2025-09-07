@@ -1,29 +1,16 @@
-import React, {useEffect} from 'react';
-import {Button, Container, Text} from "@chakra-ui/react";
-import useWebSocket from "react-use-websocket";
-import {wsUrl} from "../init.ts";
+import React from 'react';
+import {Container, Text} from "@chakra-ui/react";
+import CanvasOnline from "../components/CanvasOnline.tsx";
+import useUser from "../hooks/useUser.tsx";
 
 const HomePage = () => {
-  const {sendJsonMessage, lastJsonMessage, readyState} = useWebSocket(wsUrl,
-    {
-      shouldReconnect: () => true,
-      onOpen: () => {
-        console.log("Websocket ready");
-      },
-    },
-  )
-
-  useEffect(() => {
-    if (lastJsonMessage) {
-      console.log(`Got a new message:`, lastJsonMessage)
-    }
-  }, [lastJsonMessage])
+  const {user} = useUser()
 
   return (
-    <Container>
-      <Text fontSize='5xl'>Home</Text>
-      <Text>{readyState}</Text>
-      <Button onClick={() => sendJsonMessage({hi: 'hello'})}>Send</Button>
+    <Container p='10px' m='10px'>
+      {
+        user ? <CanvasOnline/> : <Text mx="40px" fontSize='7xl'>Home page</Text>
+      }
     </Container>
   );
 };

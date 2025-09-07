@@ -4,11 +4,15 @@ import {ADMIN_NAME, ADMIN_PASSWORD, HOSTNAME, NODE_ENV, PORT} from "./init.ts";
 import {migrateDB} from "./db/db.ts";
 import UserService from "./services/userService.ts";
 import {usersRouter} from "./routers/usersRouter.ts";
-import {wsRouter} from "./routers/wstRouter.ts";
+import {wsRouter} from "./routers/wsRouter.ts";
 
 const app = new Elysia()
-  .onRequest(({request}) => {
-    console.log(`${request.method} ${request.url}`);
+  .onTransform(function log({body, params, query, path, request: {method}}) {
+    console.log(`${method} ${path}`, {
+      body,
+      params,
+      query
+    })
   })
   .use(authRouter)
   .use(usersRouter)

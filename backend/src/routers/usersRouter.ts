@@ -1,39 +1,22 @@
 import {Elysia, t} from "elysia";
-import {jwt} from "@elysiajs/jwt";
-import {JWT_SECRET} from "../init.ts";
 import UserService from "../services/userService.ts";
+import {authMiddleware} from "../middlewares/authMiddleware.ts";
 
 export const usersRouter = new Elysia({
   prefix: '/api/users',
 })
-  .guard({
-    cookie: t.Cookie({
-      auth: t.String()
-    })
-  })
-  .use(
-    jwt({
-      name: 'jwt',
-      secret: JWT_SECRET
-    })
-  )
-  .derive(async ({jwt, status, cookie: {auth}}) => {
-    const profile = await jwt.verify(auth.value)
-
-    if (!profile || typeof profile.username !== 'string') {
-      return status("Unauthorized")
-    }
-
-    const user = UserService.getUser(profile.username)
-    if (!user) return status('Unauthorized', {error: "User not found"});
-
+  .use(authMiddleware)
+  .resolve(async ({user, status}) => {
+    if (!user) return status('Unauthorized');
     if (user.role !== 'admin') return status('Forbidden')
+    return {user}
   })
   .get('/list/', async ({}) => {
     const users = await UserService.getAllUsers()
     return {message: {users}}
   })
-  .delete('/delete/:username', async ({status, params: {username}}) => {
+  .delete('/delete/:username', async ({user, status, params: {username}}) => {
+    console.log(`Admin ${user.username} deleted ${username}.`)
     await UserService.removeUser(username)
     return status("OK")
   }, {

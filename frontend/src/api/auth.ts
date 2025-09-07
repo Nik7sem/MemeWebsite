@@ -3,7 +3,7 @@ import {z} from "zod";
 
 const authScheme = z.object({
   role: z.string(),
-  username: z.string()
+  username: z.string(),
 })
 
 export async function register(username: string, password: string) {
