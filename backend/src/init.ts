@@ -4,5 +4,5 @@ export const NODE_ENV = process.env.NODE_ENV || "development"
 export const DB_FILE_NAME = process.env.DB_FILE_NAME || 'db.sqlite'
 export const COOKIE_AUTH_SECRET = process.env.COOKIE_AUTH_SECRET || 'Fischl von Luftschloss Narfidort'
 export const JWT_SECRET = process.env.JWT_SECRET || 'Fischl von Luftschloss Narfidort'
-export const ADMIN_NAME = process.env.ADMIN_NAME || 'admin'
+export const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin'
 export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin'

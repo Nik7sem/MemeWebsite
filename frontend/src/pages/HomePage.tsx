@@ -7,7 +7,7 @@ const HomePage = () => {
   const {user} = useUser()
 
   return (
-    <Container p='10px' m='10px'>
+    <Container width="100%">
       {
         user ? <CanvasOnline/> : <Text mx="40px" fontSize='7xl'>Home page</Text>
       }

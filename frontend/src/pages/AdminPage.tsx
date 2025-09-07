@@ -3,9 +3,11 @@ import {Button, Menu, Portal, Table, Text, VStack} from "@chakra-ui/react";
 import {deleteUser, getUsers, updateUser} from "../api/users.ts";
 import {LuChevronRight} from "react-icons/lu";
 import StyledAvatar from "../components/StyledAvatar.tsx";
+import useToast from "../hooks/useToast.tsx";
 
 const AdminPage = () => {
   const [users, setUsers] = useState<{ id: number, username: string, role: string }[]>([]);
+  const {errorToast} = useToast();
 
   useEffect(() => {
     getUsers().then((rs) => {
@@ -20,6 +22,8 @@ const AdminPage = () => {
       deleteUser(username).then((rs) => {
           if (rs.data) {
             setUsers(users => users.filter(user => user.username !== username));
+          } else {
+            errorToast(rs.error ?? '')
           }
         }
       )
@@ -30,6 +34,8 @@ const AdminPage = () => {
     updateUser(username, role).then((rs) => {
         if (rs.data) {
           setUsers(users => users.map((user) => user.username === username ? {...user, role} : user));
+        } else {
+          errorToast(rs.error ?? '')
         }
       }
     )

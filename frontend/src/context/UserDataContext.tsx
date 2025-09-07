@@ -2,7 +2,7 @@ import {createContext} from "react";
 import type {UserData} from "../types/user.ts";
 
 const defaultUserData: UserData = {
-  bruh: 'bruh'
+  color: "#eb5e41"
 }
 
 export function getDefaultUserData(): UserData {

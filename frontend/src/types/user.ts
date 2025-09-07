@@ -1,5 +1,5 @@
 export type UserData = {
-  bruh: string
+  color: string
 }
 
 export type User = {

@@ -15,19 +15,25 @@ export const wsRouter = new Elysia({
   })
   .ws('/ws', {
     body: t.Object({
-      data: t.String()
+      data: t.Array(t.Object({
+        row: t.Number(),
+        col: t.Number(),
+        color: t.String()
+      }))
     }),
     cookie: t.Cookie({
       auth: t.String()
     }),
     async open(ws) {
       console.log('open', ws.id, ws.data.user.username)
+      ws.subscribe('draw')
     },
     async close(ws) {
       console.log('close', ws.id)
     },
     async message(ws, message) {
-      console.log('message', message, ws.data.user.username)
-      ws.send({echo: message})
+      if (ws.data.user.role !== 'admin') return
+      console.log('draw', message.data.length, ws.data.user.username)
+      ws.publish('draw', message)
     },
   })

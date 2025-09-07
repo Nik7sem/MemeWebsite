@@ -1,6 +1,6 @@
 import {Elysia} from 'elysia'
 import {authRouter} from "./routers/authRouter.ts";
-import {ADMIN_NAME, ADMIN_PASSWORD, HOSTNAME, NODE_ENV, PORT} from "./init.ts";
+import {ADMIN_USERNAME, ADMIN_PASSWORD, HOSTNAME, NODE_ENV, PORT} from "./init.ts";
 import {migrateDB} from "./db/db.ts";
 import UserService from "./services/userService.ts";
 import {usersRouter} from "./routers/usersRouter.ts";
@@ -26,7 +26,7 @@ async function init() {
   migrateDB()
   // await UserService.removeUser(ADMIN_NAME)
   const user = await UserService.addUser({
-    username: ADMIN_NAME,
+    username: ADMIN_USERNAME,
     password: ADMIN_PASSWORD,
     role: 'admin'
   })
