@@ -16,14 +16,14 @@ export const usersRouter = new Elysia({
     const users = await UserService.getAllUsers()
     return {message: {users}}
   })
-  .delete('/delete/:username', async ({user, status, params: {username}}) => {
-    if (username === ADMIN_USERNAME) return status('Forbidden', {error: 'Permission denied'});
-    console.log(`Admin ${user.username} deleted ${username}.`)
-    await UserService.removeUser(username)
+  .delete('/delete/:id', async ({user, status, params: {id}}) => {
+    if (id === 1) return status('Forbidden', {error: 'Permission denied'});
+    console.log(`${user.username} deleted ${id}.`)
+    await UserService.removeUser(id)
     return status("OK")
   }, {
     params: t.Object({
-      username: t.String(),
+      id: t.Number(),
     })
   })
   .post('/update/', async ({status, body: {username, role}}) => {

@@ -11,8 +11,8 @@ export async function getUsers() {
   }))
 }
 
-export async function deleteUser(username: string) {
-  return request(() => api.delete(`/users/delete/${username}`))
+export async function deleteUser(id: number) {
+  return request(() => api.delete(`/users/delete/${id}`))
 }
 
 export async function updateUser(username: string, role: string) {

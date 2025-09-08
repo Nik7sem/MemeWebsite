@@ -19,11 +19,11 @@ const AdminPage = () => {
     });
   }, []);
 
-  function onSelectAction(username: string, action: string) {
+  function onSelectAction(id: number, action: string) {
     if (action === "delete") {
-      deleteUser(username).then((rs) => {
+      deleteUser(id).then((rs) => {
           if (rs.data) {
-            setUsers(users => users.filter(user => user.username !== username));
+            setUsers(users => users.filter(user => user.id !== id));
           } else {
             errorToast(rs.error ?? '')
           }
@@ -72,7 +72,7 @@ const AdminPage = () => {
               <Table.Cell>{item.username}</Table.Cell>
               <Table.Cell>{item.role}</Table.Cell>
               <Table.Cell textAlign='center'>
-                <Menu.Root onSelect={({value}) => onSelectAction(item.username, value)}>
+                <Menu.Root onSelect={({value}) => onSelectAction(item.id, value)}>
                   <Menu.Trigger asChild>
                     <Button variant="outline" size="sm">
                       Open

@@ -11,7 +11,6 @@ export const authMiddleware = new Elysia()
     })
   )
   .resolve({as: 'scoped'}, async ({jwt, cookie: {auth}}) => {
-    console.log('AUTH')
     if (!auth) return {user: null}
     const profile = await jwt.verify(auth.value)
 

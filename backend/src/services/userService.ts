@@ -25,9 +25,9 @@ export default class UserService {
     await db.update(usersTable).set({role}).where(eq(usersTable.username, username))
   }
 
-  static async removeUser(username: string) {
+  static async removeUser(id: number) {
     await db.delete(usersTable).where(
-      eq(usersTable.username, username),
+      eq(usersTable.id, id),
     )
   }
 

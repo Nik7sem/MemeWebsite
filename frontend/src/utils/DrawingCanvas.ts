@@ -113,6 +113,10 @@ export class DrawingCanvas {
     const scaleX = this.canvas.width / rect.width;
     const scaleY = this.canvas.height / rect.height;
     const [row, col] = this.pixelsToPos((eventX - rect.left) * scaleX, (eventY - rect.top) * scaleY)
+
+    const top = this.buffer[this.buffer.length - 1]
+    if (top && top.row === row && top.col === col && top.color === this.rectColor) return
+
     this.buffer.push({row, col, color: this.rectColor})
     this.drawRect(row, col, this.rectColor)
   }

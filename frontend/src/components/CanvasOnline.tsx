@@ -107,6 +107,12 @@ const CanvasOnline = () => {
     drawingCanvasRef.current.rectColor = color.toString('css')
   }
 
+  function onMoveDraw(x: number, y: number) {
+    if (isMouseDown && user && user.role === 'admin') {
+      drawingCanvasRef.current?.onClick(x, y)
+    }
+  }
+
   return (
     <VStack width='100%'>
       <HStack>
@@ -146,7 +152,10 @@ const CanvasOnline = () => {
             <canvas ref={canvasRef}
                     onPointerDown={() => setMouseDown(true)}
                     onPointerUp={() => setMouseDown(false)}
-                    onPointerMove={(e) => isMouseDown && user && user.role === 'admin' && drawingCanvasRef.current?.onClick(e.clientX, e.clientY)}/>
+                    onPointerMove={e => onMoveDraw(e.clientX, e.clientY)}
+                    onTouchStart={() => setMouseDown(true)}
+                    onTouchEnd={() => setMouseDown(false)}
+                    onTouchMove={e => onMoveDraw(e.touches[0].clientX, e.touches[0].clientY)}/>
           </Container>
         </Flex>
       </Presence>
