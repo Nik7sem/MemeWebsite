@@ -101,6 +101,22 @@ const CanvasOnline = () => {
     }
   }, [lastJsonMessage])
 
+  useEffect(() => {
+    const preventScroll = (e: TouchEvent) => {
+      if (isMouseDown) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('touchmove', preventScroll, {passive: false});
+    document.addEventListener('touchstart', preventScroll, {passive: false});
+
+    return () => {
+      document.removeEventListener('touchmove', preventScroll);
+      document.removeEventListener('touchstart', preventScroll);
+    };
+  }, [isMouseDown]);
+
   function onColorPicked(color: Color) {
     setUserData({...userData, color: color.toString('css')})
     if (!drawingCanvasRef.current) return
@@ -146,7 +162,7 @@ const CanvasOnline = () => {
       </HStack>
 
       <Presence present={!isLoading}>
-        <Flex m='auto' width="100%" justifyContent='center' alignItems='center'>
+        <Flex m='auto' width="100%" justifyContent='center' alignItems='center' overflow='hidden'>
           <Container p='0' m='0' width='fit-content' height='fit-content' border='solid 1px #27272a'
                      borderRadius='xs'>
             <canvas ref={canvasRef}
