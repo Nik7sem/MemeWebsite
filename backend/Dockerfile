@@ -1,4 +1,4 @@
-FROM oven/bun:1 AS build
+FROM oven/bun:1 AS builder
 WORKDIR /app
 
 COPY package.json bun.lock ./
@@ -17,7 +17,7 @@ RUN bunx drizzle-kit generate
 FROM debian:stable-slim
 WORKDIR /app
 
-COPY --from=build /app/server ./server
-COPY --from=build /app/drizzle/ ./drizzle/
+COPY --from=builder /app/server ./server
+COPY --from=builder /app/drizzle/ ./drizzle/
 
 CMD ["./server"]
