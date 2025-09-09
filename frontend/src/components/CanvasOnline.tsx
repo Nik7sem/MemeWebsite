@@ -129,6 +129,17 @@ const CanvasOnline = () => {
     }
   }
 
+  function onMoveDown(x: number, y: number) {
+    setMouseDown(true)
+    if (user && user.role === 'admin') {
+      drawingCanvasRef.current?.onClick(x, y)
+    }
+  }
+
+  function onMoveUp() {
+    setMouseDown(false)
+  }
+
   return (
     <VStack width='100%'>
       <HStack>
@@ -166,11 +177,11 @@ const CanvasOnline = () => {
           <Container p='0' m='0' width='fit-content' height='fit-content' border='solid 1px #27272a'
                      borderRadius='xs'>
             <canvas ref={canvasRef}
-                    onPointerDown={() => setMouseDown(true)}
-                    onPointerUp={() => setMouseDown(false)}
+                    onPointerDown={e => onMoveDown(e.clientX, e.clientY)}
+                    onPointerUp={onMoveUp}
                     onPointerMove={e => onMoveDraw(e.clientX, e.clientY)}
-                    onTouchStart={() => setMouseDown(true)}
-                    onTouchEnd={() => setMouseDown(false)}
+                    onTouchStart={e => onMoveDown(e.touches[0].clientX, e.touches[0].clientY)}
+                    onTouchEnd={onMoveUp}
                     onTouchMove={e => onMoveDraw(e.touches[0].clientX, e.touches[0].clientY)}/>
           </Container>
         </Flex>

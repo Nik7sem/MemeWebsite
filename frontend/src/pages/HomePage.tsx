@@ -9,8 +9,8 @@ const HomePage = () => {
   const {colorMode} = useColorMode()
 
   return (
-    <Container width="100%">
-      <VStack>
+    <Container width="100%" p='0' m='0'>
+      <VStack width="100%" p='0' m='0'>
         {
           user
             ?

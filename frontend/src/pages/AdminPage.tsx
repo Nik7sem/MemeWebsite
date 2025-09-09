@@ -9,6 +9,7 @@ import {clearCanvas, setCanvasSize} from "../api/canvas.ts";
 const AdminPage = () => {
   const [users, setUsers] = useState<{ id: number, username: string, role: string }[]>([]);
   const [size, setSize] = useState<{ rows: number, cols: number }>({rows: 100, cols: 100});
+  const [isSizeInvalid, setSizeInvalid] = useState<{ rows: boolean, cols: boolean }>({rows: false, cols: false});
   const {errorToast} = useToast();
 
   useEffect(() => {
@@ -43,6 +44,20 @@ const AdminPage = () => {
     )
   }
 
+  function setCanvasRows(stringRows: string) {
+    const rows = parseInt(stringRows)
+    if (rows < 1 || rows > 1000) return setSizeInvalid({...isSizeInvalid, rows: true})
+    setSizeInvalid({...isSizeInvalid, rows: false})
+    setSize({...size, rows})
+  }
+
+  function setCanvasCols(stringCols: string) {
+    const cols = parseInt(stringCols)
+    if (cols < 1 || cols > 1000) return setSizeInvalid({...isSizeInvalid, cols: true})
+    setSizeInvalid({...isSizeInvalid, cols: false})
+    setSize({...size, cols})
+  }
+
   return (
     <VStack>
       <Text fontSize='3xl' mt='10px'>Users</Text>
@@ -67,7 +82,7 @@ const AdminPage = () => {
         <Table.Body>
           {users.map((item) => (
             <Table.Row key={item.id}>
-              <Table.Cell textAlign='center'><StyledAvatar user={item}/></Table.Cell>
+              <Table.Cell textAlign='center'><StyledAvatar m='4px' user={item}/></Table.Cell>
               <Table.Cell textAlign='center'>{item.id}</Table.Cell>
               <Table.Cell>{item.username}</Table.Cell>
               <Table.Cell>{item.role}</Table.Cell>
@@ -109,26 +124,26 @@ const AdminPage = () => {
       <Text fontSize='3xl' mt='10px'>Canvas</Text>
       <Button onClick={() => clearCanvas()}>Clear canvas</Button>
       <HStack>
-        <Field.Root>
+        <Field.Root invalid={isSizeInvalid.rows}>
           <Field.Label>Rows</Field.Label>
           <NumberInput.Root value={size.rows.toString()}
-                            onValueChange={(e) => setSize({...size, rows: parseInt(e.value)})} width="200px">
+                            onValueChange={e => setCanvasRows(e.value)} width="200px">
             <NumberInput.Control/>
             <NumberInput.Input/>
           </NumberInput.Root>
-          <Field.ErrorText>The entry is invalid</Field.ErrorText>
+          <Field.ErrorText>{"invalid (1 <= rows <= 1000)"}</Field.ErrorText>
         </Field.Root>
-        <Field.Root>
+        <Field.Root invalid={isSizeInvalid.cols}>
           <Field.Label>Cols</Field.Label>
           <NumberInput.Root value={size.cols.toString()}
-                            onValueChange={(e) => setSize({...size, cols: parseInt(e.value)})} width="200px">
+                            onValueChange={e => setCanvasCols(e.value)} width="200px">
             <NumberInput.Control/>
             <NumberInput.Input/>
           </NumberInput.Root>
-          <Field.ErrorText>The entry is invalid</Field.ErrorText>
+          <Field.ErrorText>{"invalid (1 <= cols <= 1000)"}</Field.ErrorText>
         </Field.Root>
       </HStack>
-      <Button onClick={() => setCanvasSize(size)}>Set size</Button>
+      <Button mt='20px' onClick={() => setCanvasSize(size)}>Set size</Button>
     </VStack>
   );
 };

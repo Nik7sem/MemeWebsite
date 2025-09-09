@@ -10,7 +10,7 @@ const Header = () => {
   const {user} = useUser();
 
   return (
-    <Flex justifyContent="space-between" py='15px' px='15px'>
+    <Flex justifyContent="space-between" py='15px' px='15px' width='100%'>
       <ColorModeButton/>
       <Link to='/'>
         <Heading size="3xl">Bipki</Heading>
