@@ -5,6 +5,7 @@ import VersionText from "../components/VersionText.tsx";
 import {profile} from "../api/auth.ts";
 import useUser from "../hooks/useUser.tsx";
 import Loader from "../components/Loader.tsx";
+import Footer from "../components/Footer.tsx";
 
 const RootLayout = () => {
   const {setUser} = useUser()
@@ -30,6 +31,7 @@ const RootLayout = () => {
       {
         loading ? <Loader/> : <Outlet/>
       }
+      <Footer/>
     </>
   );
 };
