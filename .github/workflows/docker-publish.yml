@@ -25,3 +25,12 @@ jobs:
         run: |
           docker compose build
           docker compose push
+
+      #- name: Wait 15 seconds for registry propagation
+      #  run: sleep 15s
+
+      - name: Trigger Watchtower update via HTTP API
+        run: |
+          curl -H "Authorization: Bearer ${{ secrets.WATCHTOWER_HTTP_API_TOKEN }}" \
+            ${{ secrets.WATCHTOWER_HTTP_API_URL }}/v1/update
+

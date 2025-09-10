@@ -1,4 +1,4 @@
-export const AppVersion = '0.0.1'
+export const AppVersion = '0.0.2'
 export const wsUrl = import.meta.env.DEV
   ? "ws://localhost:8001/ws"
   : `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}/ws`
