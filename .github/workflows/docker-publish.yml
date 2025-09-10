@@ -2,6 +2,8 @@ name: CI/CD Docker Compose
 
 on:
   push:
+    paths-ignore:
+      - 'README.md'
     branches: [ 'main' ]
 
 jobs:
@@ -30,7 +32,8 @@ jobs:
       #  run: sleep 15s
 
       - name: Trigger Watchtower update via HTTP API
+        timeout-minutes: 1
         run: |
-          curl -H "Authorization: Bearer ${{ secrets.WATCHTOWER_HTTP_API_TOKEN }}" \
+          curl -f -H "Authorization: Bearer ${{ secrets.WATCHTOWER_HTTP_API_TOKEN }}" \
             ${{ secrets.WATCHTOWER_HTTP_API_URL }}/v1/update
 
