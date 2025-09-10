@@ -5,6 +5,7 @@ import {LuChevronRight} from "react-icons/lu";
 import StyledAvatar from "../components/StyledAvatar.tsx";
 import useToast from "../hooks/useToast.tsx";
 import {clearCanvas, setCanvasSize} from "../api/canvas.ts";
+import VersionText from "../components/VersionText.tsx";
 
 const AdminPage = () => {
   const [users, setUsers] = useState<{ id: number, username: string, role: string }[]>([]);
@@ -144,6 +145,7 @@ const AdminPage = () => {
         </Field.Root>
       </HStack>
       <Button mt='20px' onClick={() => setCanvasSize(size)}>Set size</Button>
+      <VersionText/>
     </VStack>
   );
 };

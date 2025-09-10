@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Outlet} from "react-router-dom";
 import Header from "../components/Header.tsx";
-import VersionText from "../components/VersionText.tsx";
 import {profile} from "../api/auth.ts";
 import useUser from "../hooks/useUser.tsx";
 import Loader from "../components/Loader.tsx";
@@ -28,7 +27,6 @@ const RootLayout = () => {
   return (
     <Flex flexDirection='column' width='100%' minHeight='100vh' m='0' p='0' alignItems='center'>
       <Header/>
-      <VersionText/>
       {
         loading ? <Loader/> : <Outlet/>
       }
