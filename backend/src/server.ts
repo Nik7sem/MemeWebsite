@@ -25,11 +25,7 @@ const app = new Elysia()
   })
 
 async function init() {
-  try {
-    migrateDB()
-  } catch (e) {
-    console.warn(e)
-  }
+  migrateDB()
 
   // await UserService.removeUser(ADMIN_NAME)
   const user = await UserService.addUser({

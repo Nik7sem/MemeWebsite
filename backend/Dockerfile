@@ -2,7 +2,7 @@ FROM oven/bun:1 AS builder
 WORKDIR /app
 
 COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+RUN bun install --production --frozen-lockfile
 
 COPY . .
 RUN bun build \
@@ -12,12 +12,11 @@ RUN bun build \
     --target bun-linux-x64 \
     --outfile server \
     index.ts
-RUN bunx drizzle-kit generate
 
 FROM debian:stable-slim
 WORKDIR /app
 
+COPY ./drizzle ./drizzle
 COPY --from=builder /app/server ./server
-COPY --from=builder /app/drizzle/ ./drizzle/
 
 CMD ["./server"]

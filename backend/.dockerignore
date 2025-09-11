@@ -42,5 +42,3 @@ README.md
 Caddyfile
 certs
 *.sqlite
-drizzle
-
