@@ -2,6 +2,7 @@ import {Cookie, Elysia, t} from "elysia";
 import {jwt} from '@elysiajs/jwt'
 import {JWT_SECRET} from "../init.ts";
 import UserService from "../services/userService.ts";
+import {notificationRouter, notificationService} from "./notificationRouter.ts";
 
 function setAuthCookie(value: string, auth: Cookie<string | undefined> | undefined) {
   auth?.set({
@@ -48,6 +49,14 @@ export const authRouter = new Elysia({
 
     const value = await jwt.sign({username})
     setAuthCookie(value, auth)
+
+    const users = await UserService.getAllUsers()
+    for (const user of users) {
+      if (user.role === 'admin') {
+        notificationService.sendNotification(user.id, 'New user', `${username}`)
+      }
+    }
+
     return {message: {username: user.username, role: user.role}}
   }, {
     body: 'credentials'
