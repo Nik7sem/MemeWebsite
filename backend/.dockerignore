@@ -43,3 +43,4 @@ Caddyfile
 certs
 *.sqlite
 vapid.json
+./data

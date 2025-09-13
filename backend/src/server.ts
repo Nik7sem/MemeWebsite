@@ -6,7 +6,7 @@ import UserService from "./services/userService.ts";
 import {usersRouter} from "./routers/usersRouter.ts";
 import {wsRouter} from "./routers/wsRouter.ts";
 import {canvasRouter} from "./routers/canvasRouter.ts";
-import {notificationRouter} from "./routers/notificationRouter.ts";
+import {notificationRouter, notificationService} from "./routers/notificationRouter.ts";
 
 const app = new Elysia()
   .onTransform(function log({body, params, query, path, request: {method}}) {
@@ -47,5 +47,6 @@ init().then(() => {
   console.log(
     `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port} in ${NODE_ENV} mode.`
   )
+  notificationService.notifyAdmins("Website status", "Running")
 })
 

@@ -46,16 +46,10 @@ export const authRouter = new Elysia({
     if (!user) return status('Unauthorized', {error: "User already exists"})
 
     console.log(`Register ${username}.`);
+    notificationService.notifyAdmins('New user', `${username}`)
 
     const value = await jwt.sign({username})
     setAuthCookie(value, auth)
-
-    const users = await UserService.getAllUsers()
-    for (const user of users) {
-      if (user.role === 'admin') {
-        notificationService.sendNotification(user.id, 'New user', `${username}`)
-      }
-    }
 
     return {message: {username: user.username, role: user.role}}
   }, {

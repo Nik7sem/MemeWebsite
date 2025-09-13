@@ -1,8 +1,9 @@
 import webpush, {type PushSubscription, type VapidKeys} from "web-push"
 import {VAPID_KEYS_FILE_NAME} from "../init.ts";
 import {db} from "../db/db.ts";
-import {subscriptionsTable, usersTable} from "../db/schema.ts";
+import {subscriptionsTable} from "../db/schema.ts";
 import {eq} from "drizzle-orm";
+import UserService from "./userService.ts";
 
 export class NotificationService {
   private vapidKeys!: VapidKeys
@@ -54,16 +55,20 @@ export class NotificationService {
     )
     console.log(`Sending notifications to user ${userId} in the amount of ${subs.length}`)
     for (const sub of subs) {
-      await webpush.sendNotification({
-          endpoint: sub.endpoint,
-          expirationTime: sub.expirationTime,
-          keys: {
-            p256dh: sub.p256dh,
-            auth: sub.auth
-          }
-        },
-        JSON.stringify({title, body})
-      )
+      try {
+        await webpush.sendNotification({
+            endpoint: sub.endpoint,
+            expirationTime: sub.expirationTime,
+            keys: {
+              p256dh: sub.p256dh,
+              auth: sub.auth
+            }
+          },
+          JSON.stringify({title, body})
+        )
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 
@@ -81,5 +86,14 @@ export class NotificationService {
     await db.delete(subscriptionsTable).where(
       eq(subscriptionsTable.userId, userId),
     )
+  }
+
+  public async notifyAdmins(title: string, body: string) {
+    const users = await UserService.getAllUsers()
+    for (const user of users) {
+      if (user.role === 'admin') {
+        this.sendNotification(user.id, title, body)
+      }
+    }
   }
 }

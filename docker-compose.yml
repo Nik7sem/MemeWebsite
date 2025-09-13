@@ -13,7 +13,7 @@ services:
       - ADMIN_USERNAME=admin
       - ADMIN_PASSWORD=admin
     #volumes:
-    #  - ./data/db.sqlite:/app/db.sqlite
+    #  - ./data:/app/data
     networks:
     #  - proxy-net
       - default
