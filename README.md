@@ -40,7 +40,6 @@ bun run dev
 ```powershell
 cd backend
 bun i
-bunx drizzle-kit generate
 bun run dev
 ```
 
