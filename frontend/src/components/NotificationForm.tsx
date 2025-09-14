@@ -1,12 +1,14 @@
 import React, {useState, type KeyboardEvent} from 'react';
 import {Button, Field, Fieldset, Flex, Input, Stack} from "@chakra-ui/react";
 import {sendNotification} from "../api/notification.ts";
+import useToast from "../hooks/useToast.tsx";
 
 const NotificationForm = () => {
   const [userId, setUserId] = useState<number>();
   const [title, setTitle] = useState<string>();
   const [body, setBody] = useState<string>();
   const [error, setError] = useState("");
+  const {successToast} = useToast();
 
   function validate() {
     if (!userId) {
@@ -36,6 +38,8 @@ const NotificationForm = () => {
     if (!rs.data) {
       setError(rs.error ?? "")
     }
+
+    successToast('Notification sent')
   }
 
   return (
