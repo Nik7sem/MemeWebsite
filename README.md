@@ -6,6 +6,11 @@
 ## Установка git
 [https://git-scm.com/downloads/win](https://git-scm.com/downloads/win)
 
+Проверка установки
+```powershell
+git --version
+```
+
 ## Установка bun на Windows
 ```powershell
 powershell -c "irm bun.sh/install.ps1 | iex"
