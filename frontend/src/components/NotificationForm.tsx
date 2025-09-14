@@ -70,9 +70,8 @@ const NotificationForm = () => {
           </Field.Root>
         </Fieldset.Content>
 
-        <Fieldset.HelperText>
-          ХЗ ЧТО ЗДЕСЬ ПИСАТЬ
-        </Fieldset.HelperText>
+        {/*<Fieldset.HelperText>*/}
+        {/*</Fieldset.HelperText>*/}
 
         <Button type="submit" alignSelf="flex-start" onClick={() => onClick()}>
           Submit
