@@ -1,22 +1,22 @@
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
 import RootLayout from "./layouts/RootLayout.tsx";
-import HomePage from "./pages/HomePage.tsx";
+import HomePageBeta from "./pages/HomePage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import {useState} from "react";
 import type {User, UserData} from "./types/user.ts";
 import {getDefaultUserData, UserDataContext} from "./context/UserDataContext.tsx";
-import Register from "./pages/Register.tsx";
+import Register from "./pages/RegisterBeta.tsx";
 import {UserContext} from "./context/UserContext.tsx";
 import AnonymousOnly from "./layouts/AnonymousOnly.tsx";
 import RequireUser from "./layouts/RequireAuth.tsx";
 import Profile from "./pages/Profile.tsx";
 import RequireAdmin from "./layouts/RequireAdmin.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
-import Login from "./pages/Login.tsx";
+import Login from "./pages/LoginBeta.tsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route element={<RootLayout/>}>
-    <Route index element={<HomePage/>}/>
+    <Route index element={<HomePageBeta/>}/>
     <Route element={<AnonymousOnly/>}>
       <Route path="register" element={<Register/>}/>
       <Route path="login" element={<Login/>}/>
