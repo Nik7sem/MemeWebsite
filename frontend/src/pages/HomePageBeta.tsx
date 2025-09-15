@@ -59,12 +59,12 @@ const HomePageBeta = () => {
                   textAlign="center"
                   p={4}
               >
-                  <Stack spacing={4}>
+                  <Stack>
                       <Text fontSize="3xl" fontWeight="bold">
                           Добро пожаловать!
                       </Text>
                       <Text fontSize="lg">Войдите в аккаунт или зарегистрируйтесь</Text>
-                      <Stack direction="row" spacing={4} justify="center">
+                      <Stack direction="row"  justify="center">
                           <Button colorScheme="teal" variant="solid">
                               Войти
                           </Button>
