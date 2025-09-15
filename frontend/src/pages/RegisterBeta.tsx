@@ -1,7 +1,6 @@
 import React, {type KeyboardEvent, useState} from 'react';
 import {
     Input,
-    InputGroup,
     Button,
     Box,
     Flex,

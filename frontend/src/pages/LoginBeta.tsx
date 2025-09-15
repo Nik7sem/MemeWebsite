@@ -1,7 +1,6 @@
 import React, {useState, type KeyboardEvent} from 'react';
 import {
     Input,
-    InputGroup,
     Button,
     Box,
     Flex,
@@ -11,10 +10,6 @@ import {
     Fieldset,
     Span, Stack,
 } from '@chakra-ui/react'
-import {
-    FormControl,
-    FormLabel,
-} from '@chakra-ui/form-control'
 
 import {Link} from "react-router";
 import {login} from "../api/auth.ts";
@@ -25,8 +20,6 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const {setUser} = useUser();
-    const [showPassword, setShowPassword] = React.useState(false)
-    const handleClickShowPassword = () => setShowPassword(!showPassword)
 
     function validate(): boolean {
         if (!username) {
@@ -122,6 +115,7 @@ const Login = () => {
                         <Field.Root>
                             <Field.Label>Password</Field.Label>
                             <Input name="password" type="password" onChange={(e) => setPassword(e.target.value)}
+                                   placeholder = 'Password'
                                    onKeyDown={keyDownHandler}/>
                         </Field.Root>
                     </Fieldset.Content>
