@@ -1,6 +1,6 @@
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
 import RootLayout from "./layouts/RootLayout.tsx";
-import HomePageBeta from "./pages/HomePageBeta.tsx";
+import HomePageBeta from "./pages/HomePage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import {useState} from "react";
 import type {User, UserData} from "./types/user.ts";
