@@ -31,9 +31,9 @@ const RootLayout = () => {
     <Flex flexDirection='column' width='100%' minHeight='100vh' m='0' p='0' alignItems='center'>
         {!hideHeaderFooter && <Header />}
 
-        <main style={{ width: '100%', flex: 1 }}>
-            <Outlet />
-        </main>
+        {
+            loading ? <Loader/> : <Outlet/>
+        }
 
         {!hideHeaderFooter && <Footer />}
     </Flex>
