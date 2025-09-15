@@ -4,13 +4,11 @@ import {
     Button,
     Box,
     Flex,
-    Heading,
     Text,
     Field,
     Fieldset,
     Span, Stack,
 } from '@chakra-ui/react'
-
 import {Link} from "react-router";
 import {login} from "../api/auth.ts";
 import useUser from "../hooks/useUser.tsx";
@@ -54,24 +52,22 @@ const Login = () => {
         <Flex
             as="main"
             pos="fixed"
-            inset="0"        // top:0; right:0; bottom:0; left:0
+            inset="0"
             w="100vw"
             h="100vh"
             maxW="100vw"
             overflow="hidden"
+            flexDirection={{ base: 'column', md: 'row' }} // вертикально на мобилках
         >
-            <Box flex="1" minW="0" bgImage="url('/Suitcase1.jpg')" bgSize="cover" bgPos="center" />
-
-            {/* Левая часть - картинка */}
+            {/* Левая часть - изображение. Скрыта на маленьких экранах */}
             <Box
-                backgroundImage="url('/Suitcase1.jpg')"
-                backgroundPosition="center"
-                backgroundRepeat="no-repeat"
-                backgroundSize="cover"
-                position="relative"
-            >
-
-            </Box>
+                flex="1"
+                minW="0"
+                bgImage="url('/Suitcase1.jpg')"
+                bgSize="cover"
+                bgPos="center"
+                display={{ base: 'none', md: 'block' }}
+            />
 
             <Text
                 position="absolute"
@@ -81,6 +77,7 @@ const Login = () => {
                 color="whiteAlpha.700"
                 p="1"
                 borderRadius="sm"
+                display={{ base: 'none', md: 'block' }}
             >
                 BIPKI AI Suitcase data transfer technology
             </Text>
@@ -88,28 +85,31 @@ const Login = () => {
             {/* Правая часть - форма */}
             <Box
                 flex="1"
-                bg="black"
-                p="12"
+                bg="transparent"
+                p={{ base: '6', md: '12' }}
                 display="flex"
                 flexDirection="column"
                 justifyContent="center"
+                w="100%"
             >
-                <Box mb="6" fontWeight="bold" fontSize="lg" letterSpacing="wide" color="whiteAlpha.950">
-                    BIPKI Services
-                </Box>
-                <Heading size="md" mb="8" color="whiteAlpha.800">
-                    Nice to see you again
-                </Heading>
 
                 <Fieldset.Root invalid={!!error}>
+
                     <Stack>
-                        <Fieldset.Legend>Login</Fieldset.Legend>
+                        <Fieldset.Legend  mb="0" fontWeight="bold" fontSize="2xl">BiPKI Services</Fieldset.Legend>
+                        <Fieldset.HelperText fontSize="m">
+                            Nice to see you again!
+                        </Fieldset.HelperText>
+                    </Stack>
+
+                    <Stack>
+                        <Fieldset.Legend mb={"0"}>Login</Fieldset.Legend>
                     </Stack>
 
                     <Fieldset.Content>
                         <Field.Root>
                             <Field.Label>Username</Field.Label>
-                            <Input name="username" type="text" onChange={(e) => setUsername(e.target.value)}/>
+                            <Input placeholder = 'Username' name="username" type="text" onChange={(e) => setUsername(e.target.value)}/>
                         </Field.Root>
 
                         <Field.Root>
