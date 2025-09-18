@@ -1,4 +1,4 @@
-FROM oven/bun:debian AS builder
+FROM oven/bun:debian AS bun-compressed-builder
 WORKDIR /app
 
 COPY package.json bun.lock ./
@@ -11,6 +11,7 @@ RUN apt-get update && \
 
 RUN upx -9 -o ./bun-compressed /usr/local/bin/bun
 
+FROM bun-compressed-builder AS builder
 COPY . .
 RUN ./bun-compressed build \
     --compile \
